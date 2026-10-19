@@ -4,21 +4,345 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Bible School | GOD PEOPLE GATHERING</title>
-  <link rel="stylesheet" href="css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* GOD PEOPLE GATHERING — Bible School (self-contained) */
+    :root {
+      --bg: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-elevated: #f1f5f9;
+      --primary: #6d28d9;
+      --primary-dark: #5b21b6;
+      --primary-light: #8b5cf6;
+      --accent: #7c3aed;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --error: #ef4444;
+      --shadow: 0 4px 24px rgba(109, 40, 217, 0.08);
+      --radius: 16px;
+      --transition: all 0.25s ease;
+    }
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --bg-card: #1e293b;
+      --bg-elevated: #334155;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-light: #64748b;
+      --border: #334155;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    .nav-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0.9rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: #fff;
+      font-weight: 700;
+    }
+    .logo-text strong {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .logo-text span {
+      display: block;
+      font-size: 0.65rem;
+      color: var(--primary);
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+    .header-actions { display: flex; gap: 0.5rem; align-items: center; }
+    .theme-toggle, .menu-toggle {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.75rem 1.25rem 4rem;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    .offline-bar {
+      text-align: center;
+      margin-bottom: 1.25rem;
+    }
+    .btn-offline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.55rem 1.15rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-offline.active, .btn-offline:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .offline-status {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      min-height: 1.2em;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.55rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+    .select, select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-elevated);
+      color: var(--text);
+      font-size: 1rem;
+      font-family: inherit;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      cursor: pointer;
+    }
+    .select:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(109,40,217,0.15);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-secondary {
+      background: var(--bg-elevated);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-full { width: 100%; margin-top: 0.25rem; }
+    .bible-text {
+      margin-top: 1.25rem;
+      padding: 1.25rem;
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      max-height: 420px;
+      overflow-y: auto;
+      line-height: 1.75;
+    }
+    .bible-text .placeholder { color: var(--text-muted); text-align: center; }
+    .bible-header { font-weight: 700; color: var(--primary); margin-bottom: 0.75rem; }
+    .verse { margin-bottom: 0.65rem; }
+    .verse-num {
+      display: inline-block;
+      min-width: 1.6em;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.85rem;
+      margin-right: 0.35rem;
+    }
+    .bible-note {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .study-intro { margin-bottom: 1rem; }
+    .study-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 600px) {
+      .study-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .study-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.2rem;
+      box-shadow: var(--shadow);
+    }
+    .study-card h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .study-card p { font-size: 0.92rem; color: var(--text-muted); }
+    .quiz-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .quiz-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem; }
+    .quiz-question {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .quiz-question p { font-weight: 600; margin-bottom: 0.6rem; }
+    .quiz-option {
+      display: block;
+      padding: 0.55rem 0.75rem;
+      margin: 0.3rem 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.95rem;
+    }
+    .quiz-option:hover { background: var(--bg-elevated); }
+    .quiz-option input { margin-right: 0.5rem; accent-color: var(--primary); }
+    .quiz-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .quiz-result {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 12px;
+      font-weight: 600;
+      display: none;
+    }
+    .quiz-result.correct {
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .quiz-result.incorrect {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--error);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+    }
+    .footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+    .footer a { color: var(--primary); text-decoration: none; }
+  </style>
 </head>
 <body>
-  <!-- Status bar simulation for mobile look -->
-  <div class="status-bar">
-    <span class="time">07:45</span>
-    <div class="status-icons">
-      <span>4G</span>
-      <span class="signal"></span>
-      <span class="battery">28</span>
-    </div>
-  </div>
-
   <header class="header">
     <div class="nav-container">
       <a href="index.html" class="logo">
@@ -29,8 +353,7 @@
         </div>
       </a>
       <div class="header-actions">
-        <button class="menu-toggle" aria-label="Menu">☰</button>
-        <button class="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light">🌙</button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light">🌙</button>
       </div>
     </div>
   </header>
@@ -39,23 +362,21 @@
     <h1 class="section-title">Bible School</h1>
     <p class="section-subtitle">Read the Word · Weekly rotational study · Endless rotational quiz</p>
 
-    <!-- Offline Mode Button -->
     <div class="offline-bar">
-      <button id="offline-btn" class="btn btn-offline">
+      <button id="offline-btn" class="btn-offline">
         <span id="offline-icon">📡</span>
         <span id="offline-label">Enable Offline Mode</span>
       </button>
       <p id="offline-status" class="offline-status"></p>
     </div>
 
-    <!-- Tab Buttons -->
     <div class="tabs">
       <button class="tab-btn active" data-tab="reader-tab">Bible Reading</button>
       <button class="tab-btn" data-tab="study-tab">Bible Study</button>
       <button class="tab-btn" data-tab="quiz-tab">Bible Quiz</button>
     </div>
 
-    <!-- ========== BIBLE READING TAB ========== -->
+    <!-- BIBLE READING -->
     <div id="reader-tab" class="tab-content active">
       <div class="card">
         <div class="form-group">
@@ -64,45 +385,35 @@
             <option value="">Select a book...</option>
           </select>
         </div>
-
         <div class="form-group">
           <label for="chapter-select">Chapter</label>
           <select id="chapter-select" class="select">
             <option value="">Select chapter...</option>
           </select>
         </div>
-
         <button id="load-chapter-btn" class="btn btn-primary btn-full">Read Chapter</button>
-
         <div id="bible-text" class="bible-text">
           <p class="placeholder">Select a book and chapter, then click Read Chapter.</p>
         </div>
-
         <p class="bible-note">
-          World English Bible (public domain). All 66 books available.
-          <br><small>NTV (Nueva Traducción Viviente) requires a commercial license and is not included.</small>
+          World English Bible (public domain). All 66 books available.<br>
+          <small>Chapters you load are cached for offline use.</small>
         </p>
       </div>
     </div>
 
-    <!-- ========== BIBLE STUDY TAB ========== -->
+    <!-- BIBLE STUDY -->
     <div id="study-tab" class="tab-content">
       <p class="section-subtitle study-intro">4-week rolling cycle · A new set of daily stories each week of the year</p>
-      <div id="study-grid" class="study-grid">
-        <!-- Populated by JS -->
-      </div>
+      <div id="study-grid" class="study-grid"></div>
     </div>
 
-    <!-- ========== BIBLE QUIZ TAB ========== -->
+    <!-- BIBLE QUIZ -->
     <div id="quiz-tab" class="tab-content">
       <div class="card">
         <h3 class="quiz-title">Endless Rotational Quiz</h3>
         <p class="quiz-desc">Questions rotate from a large bank of Bible stories and verses. Answer a batch, then load the next — it never ends.</p>
-        
-        <div id="quiz-container">
-          <!-- Populated by JS -->
-        </div>
-
+        <div id="quiz-container"></div>
         <div class="quiz-actions">
           <button id="check-quiz-btn" class="btn btn-primary">Check Answers</button>
           <button id="next-quiz-btn" class="btn btn-secondary">Next Batch</button>
@@ -112,12 +423,360 @@
     </div>
   </main>
 
-  <nav class="bottom-nav">
-    <button class="nav-item">☰</button>
-    <button class="nav-item">○</button>
-    <button class="nav-item">◁</button>
-  </nav>
+  <footer class="footer">
+    <p>© 2026 GOD PEOPLE GATHERING. All glory to God. · <a href="index.html">Home</a></p>
+  </footer>
 
-  <script src="js/app.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    /* ===== THEME ===== */
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem('gpg_theme') || 'light';
+    root.setAttribute('data-theme', savedTheme);
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+      themeBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+      themeBtn.addEventListener('click', function () {
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('gpg_theme', next);
+        themeBtn.textContent = next === 'dark' ? '☀️' : '🌙';
+      });
+    }
+
+    /* ===== BOOKS ===== */
+    const BOOKS = [
+      { id: 'Genesis', chapters: 50 }, { id: 'Exodus', chapters: 40 }, { id: 'Leviticus', chapters: 27 },
+      { id: 'Numbers', chapters: 36 }, { id: 'Deuteronomy', chapters: 34 }, { id: 'Joshua', chapters: 24 },
+      { id: 'Judges', chapters: 21 }, { id: 'Ruth', chapters: 4 }, { id: '1 Samuel', chapters: 31 },
+      { id: '2 Samuel', chapters: 24 }, { id: '1 Kings', chapters: 22 }, { id: '2 Kings', chapters: 25 },
+      { id: '1 Chronicles', chapters: 29 }, { id: '2 Chronicles', chapters: 36 }, { id: 'Ezra', chapters: 10 },
+      { id: 'Nehemiah', chapters: 13 }, { id: 'Esther', chapters: 10 }, { id: 'Job', chapters: 42 },
+      { id: 'Psalms', chapters: 150 }, { id: 'Proverbs', chapters: 31 }, { id: 'Ecclesiastes', chapters: 12 },
+      { id: 'Song of Solomon', chapters: 8 }, { id: 'Isaiah', chapters: 66 }, { id: 'Jeremiah', chapters: 52 },
+      { id: 'Lamentations', chapters: 5 }, { id: 'Ezekiel', chapters: 48 }, { id: 'Daniel', chapters: 12 },
+      { id: 'Hosea', chapters: 14 }, { id: 'Joel', chapters: 3 }, { id: 'Amos', chapters: 9 },
+      { id: 'Obadiah', chapters: 1 }, { id: 'Jonah', chapters: 4 }, { id: 'Micah', chapters: 7 },
+      { id: 'Nahum', chapters: 3 }, { id: 'Habakkuk', chapters: 3 }, { id: 'Zephaniah', chapters: 3 },
+      { id: 'Haggai', chapters: 2 }, { id: 'Zechariah', chapters: 14 }, { id: 'Malachi', chapters: 4 },
+      { id: 'Matthew', chapters: 28 }, { id: 'Mark', chapters: 16 }, { id: 'Luke', chapters: 24 },
+      { id: 'John', chapters: 21 }, { id: 'Acts', chapters: 28 }, { id: 'Romans', chapters: 16 },
+      { id: '1 Corinthians', chapters: 16 }, { id: '2 Corinthians', chapters: 13 }, { id: 'Galatians', chapters: 6 },
+      { id: 'Ephesians', chapters: 6 }, { id: 'Philippians', chapters: 4 }, { id: 'Colossians', chapters: 4 },
+      { id: '1 Thessalonians', chapters: 5 }, { id: '2 Thessalonians', chapters: 3 }, { id: '1 Timothy', chapters: 6 },
+      { id: '2 Timothy', chapters: 4 }, { id: 'Titus', chapters: 3 }, { id: 'Philemon', chapters: 1 },
+      { id: 'Hebrews', chapters: 13 }, { id: 'James', chapters: 5 }, { id: '1 Peter', chapters: 5 },
+      { id: '2 Peter', chapters: 3 }, { id: '1 John', chapters: 5 }, { id: '2 John', chapters: 1 },
+      { id: '3 John', chapters: 1 }, { id: 'Jude', chapters: 1 }, { id: 'Revelation', chapters: 22 }
+    ];
+
+    const CACHE_KEY = 'gpg_bible_cache';
+    const OFFLINE_KEY = 'gpg_offline_mode';
+
+    function getCache() {
+      try { return JSON.parse(localStorage.getItem(CACHE_KEY) || '{}'); } catch { return {}; }
+    }
+    function saveCache(c) {
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(c)); } catch (e) {}
+    }
+    function cacheKey(book, ch) { return book + '|' + ch; }
+
+    function escapeHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    /* ===== POPULATE SELECTS ===== */
+    const bookSelect = document.getElementById('book-select');
+    const chapterSelect = document.getElementById('chapter-select');
+
+    function populateBooks() {
+      bookSelect.innerHTML = '<option value="">Select a book...</option>' +
+        BOOKS.map(b => '<option value="' + b.id + '">' + b.id + '</option>').join('');
+    }
+    function populateChapters() {
+      const book = BOOKS.find(b => b.id === bookSelect.value);
+      if (!book) {
+        chapterSelect.innerHTML = '<option value="">Select chapter...</option>';
+        return;
+      }
+      chapterSelect.innerHTML = '<option value="">Select chapter...</option>' +
+        Array.from({ length: book.chapters }, (_, i) =>
+          '<option value="' + (i + 1) + '">' + (i + 1) + '</option>'
+        ).join('');
+    }
+
+    populateBooks();
+    bookSelect.addEventListener('change', populateChapters);
+
+    /* ===== LOAD CHAPTER ===== */
+    async function fetchFromApi(book, chapter) {
+      const url = 'https://bible-api.com/' + encodeURIComponent(book) + '+' + chapter + '?translation=web';
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('API ' + res.status);
+      const data = await res.json();
+      if (data.verses && data.verses.length) {
+        return data.verses.map(v => ({ verse: v.verse, text: (v.text || '').trim() }));
+      }
+      if (data.text) return [{ verse: 1, text: data.text.trim() }];
+      throw new Error('Empty');
+    }
+
+    function renderVerses(container, verses, book, chapter) {
+      container.innerHTML =
+        '<div class="bible-header">' + escapeHtml(book) + ' ' + chapter + '</div>' +
+        verses.map(v =>
+          '<div class="verse"><span class="verse-num">' + v.verse + '</span> ' + escapeHtml(v.text) + '</div>'
+        ).join('');
+    }
+
+    async function loadChapter() {
+      const book = bookSelect.value;
+      const chapter = chapterSelect.value;
+      const container = document.getElementById('bible-text');
+      if (!book || !chapter) {
+        container.innerHTML = '<p class="placeholder">Select a book and chapter, then click Read Chapter.</p>';
+        return;
+      }
+      container.innerHTML = '<p class="placeholder">Loading Scripture...</p>';
+
+      const key = cacheKey(book, chapter);
+      const cache = getCache();
+      if (cache[key]) {
+        renderVerses(container, cache[key], book, chapter);
+        return;
+      }
+
+      try {
+        const verses = await fetchFromApi(book, chapter);
+        cache[key] = verses;
+        saveCache(cache);
+        renderVerses(container, verses, book, chapter);
+        updateOfflineUI();
+      } catch (err) {
+        container.innerHTML =
+          '<p style="color:var(--error);text-align:center;">Unable to load this chapter. ' +
+          (navigator.onLine
+            ? 'Please try again or choose another chapter.'
+            : 'You are offline and this chapter is not cached yet. Load it while online first.') +
+          '</p>';
+      }
+    }
+
+    document.getElementById('load-chapter-btn').addEventListener('click', loadChapter);
+
+    /* ===== OFFLINE ===== */
+    function isOfflineMode() { return localStorage.getItem(OFFLINE_KEY) === '1'; }
+
+    function updateOfflineUI() {
+      const btn = document.getElementById('offline-btn');
+      const icon = document.getElementById('offline-icon');
+      const label = document.getElementById('offline-label');
+      const status = document.getElementById('offline-status');
+      const on = isOfflineMode();
+      if (icon) icon.textContent = on ? '📴' : '📡';
+      if (label) label.textContent = on ? 'Offline Mode Active' : 'Enable Offline Mode';
+      if (btn) btn.classList.toggle('active', on);
+      const count = Object.keys(getCache()).length;
+      if (status) {
+        if (on) {
+          status.textContent = count
+            ? count + ' chapter(s) cached — available offline.'
+            : 'Offline mode on. Read chapters while online to cache them.';
+        } else {
+          status.textContent = count ? count + ' chapter(s) already cached.' : '';
+        }
+      }
+    }
+
+    document.getElementById('offline-btn').addEventListener('click', async function () {
+      const next = !isOfflineMode();
+      localStorage.setItem(OFFLINE_KEY, next ? '1' : '0');
+      updateOfflineUI();
+      if (next) {
+        const popular = [['Genesis',1],['John',3],['Psalms',23],['Romans',8],['Matthew',5],['John',1]];
+        const status = document.getElementById('offline-status');
+        for (const [b, c] of popular) {
+          const key = cacheKey(b, c);
+          const cache = getCache();
+          if (cache[key]) continue;
+          if (status) status.textContent = 'Caching ' + b + ' ' + c + '...';
+          try {
+            const verses = await fetchFromApi(b, c);
+            cache[key] = verses;
+            saveCache(cache);
+          } catch (e) {}
+        }
+        updateOfflineUI();
+      }
+    });
+    updateOfflineUI();
+
+    /* ===== TABS ===== */
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const tab = this.getAttribute('data-tab');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        const el = document.getElementById(tab);
+        if (el) el.classList.add('active');
+        if (tab === 'study-tab') renderWeeklyStudy();
+        if (tab === 'quiz-tab') renderQuiz();
+      });
+    });
+
+    /* ===== WEEKLY STUDY ===== */
+    const WEEKLY_STUDIES = {
+      0: [
+        { title: 'Creation & Purpose', text: 'God created the heavens and the earth and made mankind in His image. Reflect on Genesis 1–2 and your purpose in Him.', ref: 'Genesis 1–2' },
+        { title: 'The Fall & Promise', text: 'Sin entered the world, yet God promised a Redeemer. See the first gospel in Genesis 3:15.', ref: 'Genesis 3' },
+        { title: 'Noah & the Rainbow', text: 'God judged the earth but saved Noah and established the covenant of the rainbow.', ref: 'Genesis 6–9' },
+        { title: 'Abraham’s Call', text: 'Leave your country. God promises land, seed, and blessing to all nations through Abraham.', ref: 'Genesis 12, 15, 17' },
+        { title: 'Joseph & Providence', text: 'What others meant for evil, God meant for good. Trust His sovereignty in every season.', ref: 'Genesis 37–50' },
+        { title: 'Moses & the Exodus', text: 'God delivers His people with a mighty hand and gives the Law at Sinai.', ref: 'Exodus 1–20' },
+        { title: 'Rest & the Sabbath', text: 'God invites His people into rest. Jesus is our true Sabbath rest.', ref: 'Exodus 20:8–11; Hebrews 4' }
+      ],
+      1: [
+        { title: 'David the Shepherd King', text: 'A man after God’s heart. From pasture to throne — and the everlasting covenant.', ref: '1 Samuel 16; 2 Samuel 7' },
+        { title: 'Solomon’s Wisdom', text: 'Ask for wisdom. God grants it — and warns that faithfulness sustains the kingdom.', ref: '1 Kings 3, 9' },
+        { title: 'Elijah on Carmel', text: 'If the LORD is God, follow Him. Fire falls; the people return to the covenant.', ref: '1 Kings 18' },
+        { title: 'Isaiah’s Vision', text: 'Holy, holy, holy. A vision of God leads to confession, cleansing, and commission.', ref: 'Isaiah 6' },
+        { title: 'Jeremiah’s New Covenant', text: 'The law written on hearts. Full forgiveness is coming.', ref: 'Jeremiah 31:31–34' },
+        { title: 'Daniel’s Faithfulness', text: 'In exile, Daniel remains faithful. God is still on the throne of the nations.', ref: 'Daniel 1–6' },
+        { title: 'The Suffering Servant', text: 'He was pierced for our transgressions. The gospel in the Old Testament.', ref: 'Isaiah 53' }
+      ],
+      2: [
+        { title: 'The Birth of the King', text: 'The Word became flesh. God with us.', ref: 'Luke 1–2; John 1' },
+        { title: 'Baptism & Temptation', text: 'Jesus identifies with us and overcomes the tempter with the Word.', ref: 'Matthew 3–4' },
+        { title: 'Sermon on the Mount', text: 'The kingdom ethic: blessed are the poor in spirit…', ref: 'Matthew 5–7' },
+        { title: 'Miracles & Authority', text: 'Jesus heals, calms storms, and forgives sins — showing who He is.', ref: 'Mark 2–5' },
+        { title: 'The Cross', text: 'It is finished. The once-for-all sacrifice for sin.', ref: 'John 19; Isaiah 53' },
+        { title: 'The Resurrection', text: 'He is risen! Death is defeated.', ref: 'Matthew 28; 1 Corinthians 15' },
+        { title: 'The Ascension & Promise', text: 'Jesus returns to the Father and promises the Holy Spirit.', ref: 'Acts 1' }
+      ],
+      3: [
+        { title: 'Pentecost', text: 'The Spirit is poured out. The church is born in power.', ref: 'Acts 2' },
+        { title: 'The Early Church', text: 'Devoted to the apostles’ teaching, fellowship, breaking of bread, and prayer.', ref: 'Acts 2:42–47' },
+        { title: 'Paul’s Conversion', text: 'From persecutor to apostle — grace that transforms.', ref: 'Acts 9' },
+        { title: 'Justification by Faith', text: 'The righteous shall live by faith. The heart of the gospel.', ref: 'Romans 3–5' },
+        { title: 'Life in the Spirit', text: 'Walk by the Spirit. The fruit of the Spirit.', ref: 'Galatians 5; Romans 8' },
+        { title: 'The Body of Christ', text: 'One body, many members. Love is the more excellent way.', ref: '1 Corinthians 12–13' },
+        { title: 'The Blessed Hope', text: 'Christ will return. Be ready. Live in light of eternity.', ref: '1 Thessalonians 4–5; Revelation 21–22' }
+      ]
+    };
+
+    function getWeekIndex() {
+      const epoch = new Date(2024, 0, 1).getTime();
+      const days = Math.floor((Date.now() - epoch) / 86400000);
+      return Math.floor(days / 7) % 4;
+    }
+
+    function renderWeeklyStudy() {
+      const grid = document.getElementById('study-grid');
+      if (!grid) return;
+      const week = WEEKLY_STUDIES[getWeekIndex()] || WEEKLY_STUDIES[0];
+      grid.innerHTML = week.map(s =>
+        '<div class="study-card"><h4>' + escapeHtml(s.title) + '</h4><p>' + escapeHtml(s.text) +
+        '</p><p style="margin-top:0.7rem;font-size:0.88rem;"><strong style="color:var(--primary)">Key Passage:</strong> ' +
+        escapeHtml(s.ref) + '</p></div>'
+      ).join('');
+    }
+
+    /* ===== QUIZ ===== */
+    const QUIZ_BANK = [
+      { q: 'Who built the ark according to God\'s command?', options: ['Abraham', 'Noah', 'Moses', 'David'], answer: 1 },
+      { q: 'What covenant sign did God give Noah?', options: ['Circumcision', 'The rainbow', 'The Sabbath', 'The Passover'], answer: 1 },
+      { q: 'To whom did God promise descendants as numerous as the stars?', options: ['Moses', 'Elijah', 'Abraham', 'Solomon'], answer: 2 },
+      { q: 'Who led the Israelites out of Egypt?', options: ['Joshua', 'Aaron', 'Moses', 'Caleb'], answer: 2 },
+      { q: 'Which prophet was taken up to heaven in a whirlwind?', options: ['Elisha', 'Elijah', 'Isaiah', 'Jeremiah'], answer: 1 },
+      { q: 'Who was known as a man after God\'s own heart?', options: ['Saul', 'Solomon', 'David', 'Samuel'], answer: 2 },
+      { q: 'Who asked God for wisdom and received great riches as well?', options: ['David', 'Solomon', 'Hezekiah', 'Josiah'], answer: 1 },
+      { q: 'What is the New Covenant centered on?', options: ['The Law of Moses', 'The sacrifice of Jesus Christ', 'Temple worship', 'Animal sacrifices'], answer: 1 },
+      { q: 'Jesus said, "I am the way, the truth, and the ___."', options: ['light', 'life', 'door', 'shepherd'], answer: 1 },
+      { q: 'According to John 3:16, whoever believes in Him should not perish but have ___ life.', options: ['happy', 'long', 'eternal', 'peaceful'], answer: 2 },
+      { q: 'Where was Jesus born?', options: ['Nazareth', 'Jerusalem', 'Bethlehem', 'Capernaum'], answer: 2 },
+      { q: 'How many days was Jesus in the tomb before rising?', options: ['One', 'Two', 'Three', 'Seven'], answer: 2 },
+      { q: 'Who denied Jesus three times before the rooster crowed?', options: ['Judas', 'Thomas', 'Peter', 'John'], answer: 2 },
+      { q: 'What did Jesus turn water into at the wedding in Cana?', options: ['Oil', 'Wine', 'Milk', 'Honey'], answer: 1 },
+      { q: 'Who was thrown into the lions\' den?', options: ['Joseph', 'Daniel', 'Jonah', 'Paul'], answer: 1 },
+      { q: 'Who was swallowed by a great fish?', options: ['Noah', 'Jonah', 'Peter', 'Job'], answer: 1 },
+      { q: 'What is the first book of the Bible?', options: ['Exodus', 'Genesis', 'Matthew', 'Psalms'], answer: 1 },
+      { q: 'What is the last book of the Bible?', options: ['Jude', 'Malachi', 'Revelation', 'Acts'], answer: 2 },
+      { q: 'Who baptized Jesus?', options: ['Peter', 'John the Baptist', 'Paul', 'Andrew'], answer: 1 },
+      { q: 'How many disciples did Jesus choose as apostles?', options: ['7', '10', '12', '70'], answer: 2 },
+      { q: 'What fruit of the Spirit is listed first in Galatians 5?', options: ['Joy', 'Peace', 'Love', 'Patience'], answer: 2 },
+      { q: 'Who wrote most of the New Testament letters?', options: ['Peter', 'John', 'Paul', 'James'], answer: 2 },
+      { q: 'What does "Emmanuel" mean?', options: ['God saves', 'God with us', 'God is love', 'Prince of Peace'], answer: 1 },
+      { q: 'Which river did the Israelites cross into the Promised Land?', options: ['Nile', 'Jordan', 'Euphrates', 'Tigris'], answer: 1 },
+      { q: 'Who was the mother of Jesus?', options: ['Martha', 'Mary', 'Elizabeth', 'Ruth'], answer: 1 },
+      { q: 'What is the greatest commandment according to Jesus?', options: ['Keep the Sabbath', 'Love the Lord your God', 'Do not steal', 'Honor your parents'], answer: 1 },
+      { q: 'Who interpreted Pharaoh\'s dreams in Egypt?', options: ['Moses', 'Daniel', 'Joseph', 'Aaron'], answer: 2 },
+      { q: 'How many days and nights did it rain during the flood?', options: ['7', '40', '3', '12'], answer: 1 },
+      { q: 'What did God create on the first day?', options: ['Animals', 'Light', 'Man', 'The sun'], answer: 1 },
+      { q: 'Who is called the "Father of faith"?', options: ['Moses', 'Abraham', 'David', 'Noah'], answer: 1 }
+    ];
+
+    const QUIZ_INDEX_KEY = 'gpg_quiz_index';
+    let currentBatch = [];
+
+    function getQuizIndex() {
+      return parseInt(localStorage.getItem(QUIZ_INDEX_KEY) || '0', 10) || 0;
+    }
+    function setQuizIndex(i) {
+      localStorage.setItem(QUIZ_INDEX_KEY, String(i % QUIZ_BANK.length));
+    }
+
+    function renderQuiz() {
+      const container = document.getElementById('quiz-container');
+      if (!container) return;
+      const start = getQuizIndex();
+      currentBatch = [];
+      for (let i = 0; i < 5; i++) currentBatch.push(QUIZ_BANK[(start + i) % QUIZ_BANK.length]);
+
+      container.innerHTML = currentBatch.map((item, i) =>
+        '<div class="quiz-question"><p><strong>Q' + (i + 1) + '.</strong> ' + escapeHtml(item.q) + '</p>' +
+        item.options.map((opt, j) =>
+          '<label class="quiz-option"><input type="radio" name="q' + i + '" value="' + j + '"> ' + escapeHtml(opt) + '</label>'
+        ).join('') + '</div>'
+      ).join('');
+
+      const result = document.getElementById('quiz-result');
+      if (result) {
+        result.style.display = 'none';
+        result.innerHTML = '';
+        result.className = 'quiz-result';
+      }
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      currentBatch.forEach((item, i) => {
+        const sel = document.querySelector('input[name="q' + i + '"]:checked');
+        if (sel && parseInt(sel.value, 10) === item.answer) score++;
+      });
+      const result = document.getElementById('quiz-result');
+      if (!result) return;
+      result.style.display = 'block';
+      const pct = Math.round((score / currentBatch.length) * 100);
+      if (pct >= 70) {
+        result.className = 'quiz-result correct';
+        result.innerHTML = 'Well done! You scored ' + score + '/' + currentBatch.length + ' (' + pct + '%). Keep going!';
+      } else {
+        result.className = 'quiz-result incorrect';
+        result.innerHTML = 'You scored ' + score + '/' + currentBatch.length + ' (' + pct + '%). Review the Study tab and try the next batch!';
+      }
+    }
+
+    function nextBatch() {
+      setQuizIndex(getQuizIndex() + 5);
+      renderQuiz();
+    }
+
+    document.getElementById('check-quiz-btn').addEventListener('click', submitQuiz);
+    document.getElementById('next-quiz-btn').addEventListener('click', nextBatch);
+  })();
+  </script>
 </body>
 </html>
