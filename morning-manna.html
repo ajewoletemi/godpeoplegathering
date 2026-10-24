@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Morning Manna – Daily Bible Affirmations & Group Studies</title>
+  <meta name="description" content="Generate beautiful good morning Bible messages and daily affirmations perfect for group chats. Simple Bible studies included." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f8f5f0;
+      --card: #ffffff;
+      --ink: #2c2416;
+      --muted: #6b5e4a;
+      --accent: #c9a227;
+      --accent-dark: #a8841a;
+      --soft-blue: #e8f0f7;
+      --soft-gold: #f7f0e0;
+      --border: #e8dfd0;
+      --success: #2d6a4f;
+      --shadow: 0 8px 30px rgba(44, 36, 22, 0.08);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #2c2416 0%, #4a3f2c 50%, #3d3425 100%);
+      color: #f8f5f0;
+      padding: 2.5rem 1.5rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(201,162,39,0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(201,162,39,0.1) 0%, transparent 40%);
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .logo span { color: var(--accent); }
+
+    .tagline {
+      font-size: 1.05rem;
+      opacity: 0.9;
+      font-weight: 400;
+      max-width: 480px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .date-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.25rem 4rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin: -1.5rem auto 2rem;
+      background: var(--card);
+      padding: 0.4rem;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 2;
+      max-width: 520px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 0.75rem 0.5rem;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab.active {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .tab:hover:not(.active) { background: var(--soft-gold); color: var(--ink); }
+
+    .panel { display: none; animation: fadeIn 0.35s ease; }
+    .panel.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .verse-box {
+      background: linear-gradient(135deg, var(--soft-gold), #f9f4e8);
+      border-left: 4px solid var(--accent);
+      padding: 1.25rem 1.4rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1rem 0;
+    }
+
+    .verse-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+
+    .verse-ref {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent-dark);
+      margin-top: 0.6rem;
+    }
+
+    .message-preview {
+      background: #f0f7f4;
+      border: 1px solid #c8e0d4;
+      border-radius: 12px;
+      padding: 1.4rem;
+      white-space: pre-wrap;
+      font-size: 0.98rem;
+      line-height: 1.65;
+      min-height: 180px;
+      position: relative;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 1.25rem 0;
+    }
+
+    select, button, .btn {
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 0.7rem 1.2rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    select { min-width: 160px; }
+
+    button.primary, .btn.primary {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+      font-weight: 600;
+    }
+
+    button.primary:hover, .btn.primary:hover {
+      background: #1f1a12;
+      transform: translateY(-1px);
+    }
+
+    button.accent, .btn.accent {
+      background: var(--accent);
+      color: #1f1a12;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    button.accent:hover { background: var(--accent-dark); color: #fff; }
+
+    button.ghost {
+      background: transparent;
+      border: 1px dashed var(--border);
+    }
+
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .copy-toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--success);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      box-shadow: 0 8px 25px rgba(45,106,79,0.3);
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 100;
+    }
+
+    .copy-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .study-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .study-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .study-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 6px 20px rgba(201,162,39,0.15);
+      transform: translateY(-2px);
+    }
+
+    .study-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .study-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .study-detail {
+      display: none;
+    }
+
+    .study-detail.active { display: block; }
+
+    .questions {
+      list-style: none;
+      margin-top: 1rem;
+    }
+
+    .questions li {
+      padding: 0.7rem 0 0.7rem 1.5rem;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .questions li:last-child { border-bottom: none; }
+
+    .questions li::before {
+      content: '✦';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.85rem;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .footer a { color: var(--accent-dark); text-decoration: none; }
+
+    .loading {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 0.4rem;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .theme-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .pill {
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: var(--soft-gold);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pill.active, .pill:hover {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    @media (max-width: 600px) {
+      .logo { font-size: 2.2rem; }
+      .tabs { flex-direction: column; }
+      .controls { flex-direction: column; }
+      select, button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-content">
+      <h1 class="logo">Morning <span>Manna</span></h1>
+      <p class="tagline">Daily Bible affirmations & good morning messages crafted for your group chat</p>
+      <div class="date-badge" id="todayDate"></div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="tabs">
+      <button class="tab active" data-tab="affirm">Good Morning</button>
+      <button class="tab" data-tab="study">Bible Studies</button>
+      <button class="tab" data-tab="verse">Verse of the Day</button>
+    </div>
+
+    <!-- AFFIRMATIONS PANEL -->
+    <div class="panel active" id="affirm">
+      <div class="card">
+        <h2 class="card-title">🌅 Generate Good Morning Message</h2>
+        <p style="color:var(--muted);margin-bottom:1rem;">Choose a theme, then copy a ready-to-send message for your group chat (WhatsApp, Telegram, etc.).</p>
+
+        <div class="theme-pills" id="themePills">
+          <span class="pill active" data-theme="hope">Hope</span>
+          <span class="pill" data-theme="strength">Strength</span>
+          <span class="pill" data-theme="peace">Peace</span>
+          <span class="pill" data-theme="love">Love</span>
+          <span class="pill" data-theme="gratitude">Gratitude</span>
+          <span class="pill" data-theme="faith">Faith</span>
+        </div>
+
+        <div class="controls">
+          <button class="primary" id="generateBtn">Generate Fresh Message</button>
+          <button class="accent" id="copyBtn">📋 Copy for Group Chat</button>
+        </div>
+
+        <div class="message-preview" id="messagePreview">
+          Loading today's blessing...
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">✨ Today's Affirmation</h2>
+        <div class="verse-box" id="affirmationBox">
+          <div class="verse-text" id="affirmationText">Loading...</div>
+          <div class="verse-ref" id="affirmationRef"></div>
+        </div>
+        <p style="color:var(--muted);font-size:0.95rem;" id="affirmationExplain"></p>
+      </div>
+    </div>
+
+    <!-- BIBLE STUDIES PANEL -->
+    <div class="panel" id="study">
+      <div class="card">
+        <h2 class="card-title">📖 Group Bible Studies</h2>
+        <p style="color:var(--muted);margin-bottom:1.25rem;">Short, ready-to-use studies perfect for group chats or weekly gatherings. Click a topic to expand.</p>
+
+        <div class="study-grid" id="studyGrid"></div>
+      </div>
+
+      <div class="card study-detail" id="studyDetail">
+        <button class="ghost" id="backToStudies" style="margin-bottom:1rem;">← Back to topics</button>
+        <h2 class="card-title" id="studyTitle"></h2>
+        <div class="verse-box">
+          <div class="verse-text" id="studyVerse"></div>
+          <div class="verse-ref" id="studyRef"></div>
+        </div>
+        <p id="studyBody" style="margin:1rem 0;"></p>
+        <h3 style="font-size:1.1rem;margin:1.25rem 0 0.5rem;">Discussion Questions</h3>
+        <ul class="questions" id="studyQuestions"></ul>
+        <div class="controls" style="margin-top:1.5rem;">
+          <button class="accent" id="copyStudyBtn">📋 Copy Study for Group</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VERSE OF THE DAY PANEL -->
+    <div class="panel" id="verse">
+      <div class="card">
+        <h2 class="card-title">✝️ Verse of the Day</h2>
+        <p style="color:var(--muted);margin-bottom:1rem;">Fresh from Scripture, the same for everyone worldwide today.</p>
+
+        <div class="verse-box" id="votdBox">
+          <div class="verse-text" id="votdText">Loading verse...</div>
+          <div class="verse-ref" id="votdRef"></div>
+        </div>
+
+        <div class="controls">
+          <button class="primary" id="refreshVotd">Refresh</button>
+          <button class="accent" id="copyVotd">📋 Copy Verse</button>
+        </div>
+
+        <p style="font-size:0.85rem;color:var(--muted);margin-top:1rem;" id="votdCopyright"></p>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">🔍 Look Up Any Verse</h2>
+        <div class="controls">
+          <input type="text" id="verseInput" placeholder="e.g. John 3:16 or Psalm 23" style="flex:1;min-width:200px;padding:0.7rem 1rem;border-radius:10px;border:1px solid var(--border);font-family:inherit;" />
+          <button class="primary" id="lookupBtn">Look Up</button>
+        </div>
+        <div class="verse-box" id="lookupBox" style="display:none;">
+          <div class="verse-text" id="lookupText"></div>
+          <div class="verse-ref" id="lookupRef"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Morning Manna • Free tool for Christian groups • Scripture from public-domain sources</p>
+    <p style="margin-top:0.4rem;">Made with love for the body of Christ ❤️</p>
+  </footer>
+
+  <div class="copy-toast" id="toast">Copied to clipboard!</div>
+
+  <script>
+    // ========== DATA ==========
+    const affirmations = {
+      hope: [
+        { verse: "Jeremiah 29:11", text: "For I know the thoughts that I think toward you, saith the Lord, thoughts of peace, and not of evil, to give you an expected end.", affirmation: "God has good plans for me. My future is filled with hope." },
+        { verse: "Romans 15:13", text: "Now the God of hope fill you with all joy and peace in believing, that ye may abound in hope, through the power of the Holy Ghost.", affirmation: "I am filled with joy and peace. Hope overflows in me today." },
+        { verse: "Psalm 42:11", text: "Why art thou cast down, O my soul? and why art thou disquieted within me? hope thou in God: for I shall yet praise him, who is the health of my countenance, and my God.", affirmation: "My soul hopes in God. He is my help and my joy." }
+      ],
+      strength: [
+        { verse: "Isaiah 40:31", text: "But they that wait upon the Lord shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint.", affirmation: "I wait on the Lord and my strength is renewed. I rise like an eagle." },
+        { verse: "Philippians 4:13", text: "I can do all things through Christ which strengtheneth me.", affirmation: "I can do all things through Christ who strengthens me." },
+        { verse: "2 Timothy 1:7", text: "For God hath not given us the spirit of fear; but of power, and of love, and of a sound mind.", affirmation: "God has given me power, love, and a sound mind. Fear has no place in me." }
+      ],
+      peace: [
+        { verse: "Philippians 4:6-7", text: "Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God. And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.", affirmation: "The peace of God guards my heart and mind today." },
+        { verse: "John 14:27", text: "Peace I leave with you, my peace I give unto you: not as the world giveth, give I unto you. Let not your heart be troubled, neither let it be afraid.", affirmation: "Jesus has given me His peace. My heart is not troubled." },
+        { verse: "Isaiah 26:3", text: "Thou wilt keep him in perfect peace, whose mind is stayed on thee: because he trusteth in thee.", affirmation: "My mind is stayed on God. He keeps me in perfect peace." }
+      ],
+      love: [
+        { verse: "Romans 8:38-39", text: "For I am persuaded, that neither death, nor life, nor angels, nor principalities, nor powers, nor things present, nor things to come, Nor height, nor depth, nor any other creature, shall be able to separate us from the love of God, which is in Christ Jesus our Lord.", affirmation: "Nothing can separate me from the love of God in Christ Jesus." },
+        { verse: "1 John 4:19", text: "We love him, because he first loved us.", affirmation: "I love because God first loved me. His love flows through me." },
+        { verse: "Jeremiah 31:3", text: "The Lord hath appeared of old unto me, saying, Yea, I have loved thee with an everlasting love: therefore with lovingkindness have I drawn thee.", affirmation: "God loves me with an everlasting love. I am drawn by His kindness." }
+      ],
+      gratitude: [
+        { verse: "Psalm 118:24", text: "This is the day which the Lord hath made; we will rejoice and be glad in it.", affirmation: "This is the day the Lord has made. I will rejoice and be glad in it." },
+        { verse: "1 Thessalonians 5:18", text: "In every thing give thanks: for this is the will of God in Christ Jesus concerning you.", affirmation: "I give thanks in everything. This is God’s will for me." },
+        { verse: "Psalm 103:2", text: "Bless the Lord, O my soul, and forget not all his benefits.", affirmation: "I bless the Lord and remember all His benefits toward me." }
+      ],
+      faith: [
+        { verse: "Hebrews 11:1", text: "Now faith is the substance of things hoped for, the evidence of things not seen.", affirmation: "My faith is the substance of things hoped for. I walk by faith, not by sight." },
+        { verse: "Mark 11:24", text: "Therefore I say unto you, What things soever ye desire, when ye pray, believe that ye receive them, and ye shall have them.", affirmation: "When I pray, I believe I receive. Faith fills my prayers." },
+        { verse: "Proverbs 3:5-6", text: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.", affirmation: "I trust in the Lord with all my heart. He directs my paths." }
+      ]
+    };
+
+    const greetings = [
+      "Good morning, family! 🌅",
+      "Rise and shine, beloved! ☀️",
+      "Happy new morning, saints! ✨",
+      "Blessed morning to you all! 🙏",
+      "Good morning in the name of Jesus! ✝️"
+    ];
+
+    const closings = [
+      "Have a blessed and productive day! 🙏\n#MorningManna",
+      "Walk in His favor today! ✨\nGod bless you all.",
+      "May His presence go with you! 🕊️\nAmen.",
+      "You are loved and covered! ❤️\nHave a wonderful day.",
+      "Stay rooted in Christ today! 🌿\nBlessings!"
+    ];
+
+    const studies = [
+      {
+        id: "new-mercies",
+        title: "New Mercies Every Morning",
+        verse: "Lamentations 3:22-23",
+        text: "It is of the Lord's mercies that we are not consumed, because his compassions fail not. They are new every morning: great is thy faithfulness.",
+        body: "Every sunrise is a reminder that God’s compassion has not run out. No matter what yesterday held—failures, worries, or pain—His mercies are brand new today. Great is His faithfulness!",
+        questions: [
+          "What ‘old’ burden are you tempted to carry into this new day?",
+          "How can remembering God’s new mercies change the way you face challenges?",
+          "Share one way you’ve experienced God’s faithfulness recently."
+        ]
+      },
+      {
+        id: "armor",
+        title: "Putting On the Armor",
+        verse: "Ephesians 6:10-11",
+        text: "Finally, my brethren, be strong in the Lord, and in the power of his might. Put on the whole armour of God, that ye may be able to stand against the wiles of the devil.",
+        body: "We are in a spiritual battle, but God has not left us defenseless. He provides the full armor so we can stand firm. Strength comes from Him, not ourselves.",
+        questions: [
+          "Which piece of the armor (truth, righteousness, gospel of peace, faith, salvation, Word) do you need most this week?",
+          "How does ‘being strong in the Lord’ look different from self-reliance?",
+          "What ‘wiles’ or schemes do you notice trying to pull you away from peace?"
+        ]
+      },
+      {
+        id: "abide",
+        title: "Abiding in the Vine",
+        verse: "John 15:5",
+        text: "I am the vine, ye are the branches: He that abideth in me, and I in him, the same bringeth forth much fruit: for without me ye can do nothing.",
+        body: "Fruitfulness is not about striving harder—it’s about staying connected. When we abide in Jesus, His life flows through us and produces what we could never manufacture on our own.",
+        questions: [
+          "What does ‘abiding’ look like in your daily routine?",
+          "Where have you been trying to produce fruit in your own strength?",
+          "How can the group help one another stay connected to the Vine?"
+        ]
+      },
+      {
+        id: "identity",
+        title: "Who God Says You Are",
+        verse: "1 Peter 2:9",
+        text: "But ye are a chosen generation, a royal priesthood, an holy nation, a peculiar people; that ye should shew forth the praises of him who hath called you out of darkness into his marvellous light.",
+        body: "The world constantly tries to define us. God has already spoken: chosen, royal, holy, set apart. Our identity is received, not achieved.",
+        questions: [
+          "Which of these titles (chosen, royal priesthood, holy nation, peculiar people) encourages you most right now?",
+          "How does knowing your identity in Christ affect how you treat others?",
+          "What ‘darkness’ has God called you out of that you can praise Him for?"
+        ]
+      },
+      {
+        id: "anxiety",
+        title: "Casting Your Cares",
+        verse: "1 Peter 5:7",
+        text: "Casting all your care upon him; for he careth for you.",
+        body: "Anxiety often comes from carrying what was never ours to carry. God invites us to throw every care onto Him—because He genuinely cares for us.",
+        questions: [
+          "What care have you been holding onto that you need to cast today?",
+          "Why is it sometimes hard to believe God really cares about the details?",
+          "How can we remind each other this week to keep casting our cares?"
+        ]
+      },
+      {
+        id: "rejoice",
+        title: "Rejoice Always",
+        verse: "Philippians 4:4",
+        text: "Rejoice in the Lord alway: and again I say, Rejoice.",
+        body: "Paul wrote these words from prison. Rejoicing is not based on circumstances but on the unchanging Lord. It is a choice and a command rooted in who God is.",
+        questions: [
+          "What makes it difficult to rejoice in hard seasons?",
+          "How is rejoicing in the Lord different from positive thinking?",
+          "Share one reason you can rejoice in the Lord right now."
+        ]
+      }
+    ];
+
+    // ========== STATE ==========
+    let currentTheme = 'hope';
+    let currentMessage = '';
+    let currentStudy = null;
+
+    // ========== HELPERS ==========
+    function dayOfYear() {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), 0, 0);
+      const diff = now - start;
+      return Math.floor(diff / (1000 * 60 * 60 * 24));
+    }
+
+    function pick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function seededPick(arr, seed) {
+      return arr[seed % arr.length];
+    }
+
+    function showToast(msg = 'Copied to clipboard!') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast();
+      } catch (e) {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast();
+      }
+    }
+
+    // ========== MESSAGE GENERATOR ==========
+    function generateMessage(theme = currentTheme) {
+      const list = affirmations[theme] || affirmations.hope;
+      const item = pick(list);
+      const greeting = pick(greetings);
+      const closing = pick(closings);
+
+      const msg = `${greeting}
+
+${item.affirmation}
+
+📖 "${item.text}"
+— ${item.verse}
+
+${closing}`;
+
+      currentMessage = msg;
+      document.getElementById('messagePreview').textContent = msg;
+
+      // Also update the affirmation card
+      document.getElementById('affirmationText').textContent = `"${item.affirmation}"`;
+      document.getElementById('affirmationRef').textContent = item.verse;
+      document.getElementById('affirmationExplain').textContent = item.text;
+    }
+
+    // ========== VERSE OF THE DAY ==========
+    async function loadVotd() {
+      const textEl = document.getElementById('votdText');
+      const refEl = document.getElementById('votdRef');
+      const copyEl = document.getElementById('votdCopyright');
+      textEl.textContent = 'Loading verse...';
+      refEl.textContent = '';
+      copyEl.textContent = '';
+
+      try {
+        const res = await fetch('https://api.midvash.com/v1/votd?version=kjv');
+        const data = await res.json();
+        // Handle both possible shapes
+        const text = data.text || (data.data && data.data.text) || 'Unable to load verse.';
+        const ref = data.reference || (data.meta && data.meta.reference) || '';
+        const copyright = data.copyright || (data.meta && data.meta.copyright) || 'King James Version (Public Domain)';
+
+        textEl.textContent = text.trim();
+        refEl.textContent = ref;
+        copyEl.textContent = copyright.replace(/\n/g, ' • ');
+      } catch (err) {
+        // Fallback verse
+        textEl.textContent = 'This is the day which the Lord hath made; we will rejoice and be glad in it.';
+        refEl.textContent = 'Psalm 118:24';
+        copyEl.textContent = 'Fallback verse (KJV Public Domain)';
+      }
+    }
+
+    // ========== LOOKUP ==========
+    async function lookupVerse() {
+      const input = document.getElementById('verseInput').value.trim();
+      if (!input) return;
+
+      const box = document.getElementById('lookupBox');
+      const textEl = document.getElementById('lookupText');
+      const refEl = document.getElementById('lookupRef');
+      box.style.display = 'block';
+      textEl.textContent = 'Looking up...';
+      refEl.textContent = '';
+
+      // Normalize input for bible-api.com
+      const ref = input.replace(/\s+/g, '+').replace(/:/g, '%3A');
+      try {
+        const res = await fetch(`https://bible-api.com/${ref}?translation=kjv`);
+        const data = await res.json();
+        if (data.error || !data.text) {
+          textEl.textContent = 'Verse not found. Try a different reference (e.g. John 3:16).';
+          return;
+        }
+        textEl.textContent = data.text.trim();
+        refEl.textContent = data.reference + ' (KJV)';
+      } catch (e) {
+        textEl.textContent = 'Could not reach the Bible service. Please try again later.';
+      }
+    }
+
+    // ========== STUDIES ==========
+    function renderStudyGrid() {
+      const grid = document.getElementById('studyGrid');
+      grid.innerHTML = studies.map(s => `
+        <div class="study-card" data-id="${s.id}">
+          <h3>${s.title}</h3>
+          <p>${s.verse}</p>
+        </div>
+      `).join('');
+
+      grid.querySelectorAll('.study-card').forEach(card => {
+        card.addEventListener('click', () => showStudy(card.dataset.id));
+      });
+    }
+
+    function showStudy(id) {
+      const s = studies.find(x => x.id === id);
+      if (!s) return;
+      currentStudy = s;
+
+      document.getElementById('studyGrid').parentElement.style.display = 'none';
+      const detail = document.getElementById('studyDetail');
+      detail.classList.add('active');
+
+      document.getElementById('studyTitle').textContent = s.title;
+      document.getElementById('studyVerse').textContent = s.text;
+      document.getElementById('studyRef').textContent = s.verse;
+      document.getElementById('studyBody').textContent = s.body;
+      document.getElementById('studyQuestions').innerHTML = s.questions.map(q => `<li>${q}</li>`).join('');
+    }
+
+    function hideStudy() {
+      document.getElementById('studyDetail').classList.remove('active');
+      document.getElementById('studyGrid').parentElement.style.display = 'block';
+      currentStudy = null;
+    }
+
+    function copyStudy() {
+      if (!currentStudy) return;
+      const s = currentStudy;
+      const msg = `📖 *${s.title}*
+
+"${s.text}"
+— ${s.verse}
+
+${s.body}
+
+*Discussion Questions:*
+${s.questions.map((q, i) => `${i + 1}. ${q}`).join('\n')}
+
+Shared via Morning Manna 🙏`;
+      copyText(msg);
+    }
+
+    // ========== TABS ==========
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ========== EVENTS ==========
+    document.getElementById('generateBtn').addEventListener('click', () => generateMessage());
+    document.getElementById('copyBtn').addEventListener('click', () => copyText(currentMessage));
+    document.getElementById('copyVotd').addEventListener('click', () => {
+      const text = document.getElementById('votdText').textContent;
+      const ref = document.getElementById('votdRef').textContent;
+      copyText(`📖 "${text}"\n— ${ref}`);
+    });
+    document.getElementById('refreshVotd').addEventListener('click', loadVotd);
+    document.getElementById('lookupBtn').addEventListener('click', lookupVerse);
+    document.getElementById('verseInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') lookupVerse();
+    });
+    document.getElementById('backToStudies').addEventListener('click', hideStudy);
+    document.getElementById('copyStudyBtn').addEventListener('click', copyStudy);
+
+    document.getElementById('themePills').addEventListener('click', e => {
+      if (e.target.classList.contains('pill')) {
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        e.target.classList.add('active');
+        currentTheme = e.target.dataset.theme;
+        generateMessage(currentTheme);
+      }
+    });
+
+    // ========== INIT ==========
+    function init() {
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-US', options);
+
+      // Seed initial message by day
+      const themes = Object.keys(affirmations);
+      currentTheme = themes[dayOfYear() % themes.length];
+      document.querySelectorAll('.pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.theme === currentTheme);
+      });
+      generateMessage(currentTheme);
+
+      renderStudyGrid();
+      loadVotd();
+    }
+
+    init();
+  </script>
+</body>
+</html>
